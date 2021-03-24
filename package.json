@@ -1,0 +1,24 @@
+{
+  "name": "status",
+  "version": "1.0.0",
+  "main": "lib/server.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src -d lib",
+    "start": "yarn build && node ."
+  },
+  "dependencies": {
+    "@koa/router": "^10.0.0",
+    "dotenv": "^8.2.0",
+    "googleapis": "39",
+    "koa": "^2.13.1",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.13.10",
+    "@babel/preset-env": "^7.13.12",
+    "babel-polyfill": "^6.26.0",
+    "core-js": "^3.9.1"
+  }
+}
