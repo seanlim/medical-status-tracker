@@ -1,68 +1,16 @@
-import fs from 'fs';
 import flatten from 'lodash/flatten';
 import groupBy from 'lodash/groupBy';
-import readline from 'readline';
 import { google } from 'googleapis';
 
-import promisify from '../promisify';
-
-// If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
-
-const TOKEN_PATH = 'token.json';
-
 export async function fetchMedicalStatuses() {
-    // Authorize a client with credentials, then call the Google Sheets API.
-    const authorizePromise = promisify(authorize);
-    try {
-        const authClient = await authorizePromise(
-            JSON.parse(process.env.CREDENTIALS)
-        );
-        return getData(authClient);
-    } catch {
-        console.error(err);
-    }
-}
-
-function authorize(credentials, callback) {
-    const { client_secret, client_id, redirect_uris } = credentials.installed;
-    const oAuth2Client = new google.auth.OAuth2(
-        client_id,
-        client_secret,
-        redirect_uris[0]
+    const jwtClient = new google.auth.JWT(
+        process.env.CLIENT_NAME,
+        null,
+        process.env.CLIENT_KEY.replace(/\\n/gm, '\n'),
+        ['https://www.googleapis.com/auth/spreadsheets']
     );
-
-    // Check if we have previously stored a token.
-    fs.readFile(TOKEN_PATH, (err, token) => {
-        if (err) return getNewToken(oAuth2Client, callback);
-        oAuth2Client.setCredentials(JSON.parse(token));
-        callback(null, oAuth2Client);
-    });
-}
-
-function getNewToken(oAuth2Client, callback) {
-    const authUrl = oAuth2Client.generateAuthUrl({
-        access_type: 'offline',
-        scope: SCOPES,
-    });
-    console.log('Authorize this app by visiting this url:', authUrl);
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-    rl.question('Enter the code from that page here: ', (code) => {
-        rl.close();
-        oAuth2Client.getToken(code, (err, token) => {
-            if (err) return callback(err, null);
-            oAuth2Client.setCredentials(token);
-            // Store the token to disk for later program executions
-            fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-                if (err) return callback(err, null);
-                console.log('Token stored to', TOKEN_PATH);
-            });
-            callback(null, oAuth2Client);
-        });
-    });
+    await jwtClient.authorize();
+    return getData(jwtClient);
 }
 
 // Coy, PL, initials, reasoning, status, start, end, duration
