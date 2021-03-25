@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src -d lib",
-    "start": "node.",
+    "start": "node .",
     "dev": "yarn build && node ."
   },
   "dependencies": {
