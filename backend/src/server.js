@@ -2,7 +2,7 @@ import Koa from 'koa';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import router from './router';
+import { users, medicalStatus, publik } from './routers';
 
 const app = new Koa();
 
@@ -21,6 +21,13 @@ app.use(async (ctx, next) => {
     ctx.set('X-Response-Time', `${ms}ms`);
 });
 
-app.use(router.routes()).use(router.allowedMethods());
+app.use(medicalStatus.routes())
+    .use(users.routes())
+    .use(publik.routes())
+    .use(medicalStatus.allowedMethods())
+    .use(users.allowedMethods())
+    .use(publik.allowedMethods());
 
 app.listen(process.env.PORT);
+
+console.info(`Server running on port ${process.env.PORT}`);

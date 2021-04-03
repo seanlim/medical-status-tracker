@@ -1,25 +1,32 @@
 {
-  "name": "status",
-  "version": "1.0.0",
-  "main": "lib/server.js",
-  "license": "MIT",
-  "scripts": {
-    "build": "babel src -d lib",
-    "start": "node .",
-    "dev": "yarn build && node ."
-  },
-  "dependencies": {
-    "@koa/router": "^10.0.0",
-    "dotenv": "^8.2.0",
-    "googleapis": "39",
-    "koa": "^2.13.1",
-    "@babel/cli": "^7.2.3",
-    "lodash": "^4.17.21",
-    "core-js": "^3.9.1"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.13.10",
-    "@babel/preset-env": "^7.13.12",
-    "babel-polyfill": "^6.26.0"
-  }
+    "name": "status",
+    "version": "1.0.0",
+    "main": "lib/server.js",
+    "license": "MIT",
+    "scripts": {
+        "build": "babel src -d lib",
+        "start": "node .",
+        "dev": "yarn build && node ."
+    },
+    "dependencies": {
+        "@babel/cli": "^7.2.3",
+        "@koa/router": "^10.0.0",
+        "@prisma/client": "2.20.1",
+        "bcryptjs": "^2.4.3",
+        "core-js": "^3.9.1",
+        "dotenv": "^8.2.0",
+        "googleapis": "39",
+        "jsonwebtoken": "^8.5.1",
+        "knex": "^0.95.4",
+        "koa": "^2.13.1",
+        "koa-bodyparser": "^4.3.0",
+        "lodash": "^4.17.21",
+        "pg": "^8.5.1"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.13.10",
+        "@babel/preset-env": "^7.13.12",
+        "babel-polyfill": "^6.26.0",
+        "prisma": "2.20.1"
+    }
 }
