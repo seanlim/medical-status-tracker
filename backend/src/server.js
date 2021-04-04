@@ -3,8 +3,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { users, medicalStatus, publik } from './routers';
+import { seedM39S } from './seeds';
 
 const app = new Koa();
+
+// seed m39s application user
+seedM39S();
 
 // logger
 app.use(async (ctx, next) => {
