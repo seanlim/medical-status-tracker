@@ -1,17 +1,19 @@
-import knex from "knex";
+import knex from 'knex';
 
 export default function db() {
     return async (ctx, next) => {
         const db = knex({
-            client: "postgres",
+            client: 'postgres',
             connection: process.env.DATABASE_URL,
         });
 
         ctx.db = db;
-        next();
+        await next();
 
-        ctx.res.on("finish", () => {
-            db.destroy();
-        });
+        // somehow this event watcher is being instantly called.
+
+        // ctx.res.on('finish', () => {
+        //     db.destroy();
+        // });
     };
 }

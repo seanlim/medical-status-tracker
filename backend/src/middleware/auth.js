@@ -29,7 +29,7 @@ export function auth() {
         }
 
         if (db) {
-            const user = await db('users').where({ id }).first();
+            const user = await db('user').where({ id }).first();
             if (!user) {
                 ctx.status = 401;
                 ctx.body = {
@@ -43,6 +43,6 @@ export function auth() {
             ctx.user = user;
         }
 
-        next();
+        await next();
     };
 }
