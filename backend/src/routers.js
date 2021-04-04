@@ -4,15 +4,14 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 import { fetchMedicalStatuses } from './sheetsAPI';
-import db from './middleware/db';
 import { auth } from './middleware/auth';
 
 export const publik = new Router();
 export const medicalStatus = new Router();
 export const users = new Router();
 
-medicalStatus.use(db()).use(auth()).use(bodyParser());
-users.use(db()).use(bodyParser());
+medicalStatus.use(auth()).use(bodyParser());
+users.use(bodyParser());
 
 // test endpoint
 publik.get('/hello', async (ctx, next) => {
@@ -23,12 +22,14 @@ publik.get('/hello', async (ctx, next) => {
 
 // authenticates a user
 users.post('/login', async (ctx, next) => {
-    // get db and cookies from req state
-    const db = ctx.db;
     // extract params
     const { username, password } = ctx.request.body;
     // query against user email
-    const user = await db('User').where({ username }).first();
+    const user = await ctx.db.user.findUnique({
+        where: {
+            username,
+        },
+    });
     if (!user) {
         ctx.body = { error: { message: 'Invalid username or password.' } };
         ctx.status = 401;

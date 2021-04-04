@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import cors from '@koa/cors';
+import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -9,8 +10,10 @@ import { seedM39S } from './seeds';
 
 const app = new Koa();
 
+app.context.db = new PrismaClient();
+
 // seed m39s application user
-seedM39S();
+seedM39S(app.context.db);
 
 // cors, headers
 app.use(credentials());
