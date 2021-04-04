@@ -1,5 +1,6 @@
 <script>
     import fetch from '../fetch';
+
     let username = '',
         password = '';
 
