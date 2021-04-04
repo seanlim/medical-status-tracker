@@ -27,7 +27,11 @@ export function auth() {
             return;
         }
 
-        const user = await ctx.db('User').where({ id }).first();
+        const user = await ctx.db.user.findUnique({
+            where: {
+                id,
+            },
+        });
         if (!user) {
             ctx.status = 401;
             ctx.body = {
