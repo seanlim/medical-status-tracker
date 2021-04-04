@@ -8,10 +8,12 @@
         "build": "snowpack build"
     },
     "devDependencies": {
+        "@snowpack/plugin-dotenv": "^2.1.0",
         "@snowpack/plugin-svelte": "^3.6.0",
         "snowpack": "^3.1.2"
     },
     "dependencies": {
+        "isomorphic-unfetch": "^3.1.0",
         "svelte": "^3.35.0",
         "unfetch": "^4.2.0"
     }

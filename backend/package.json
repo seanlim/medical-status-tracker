@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "@babel/cli": "^7.2.3",
+        "@koa/cors": "^3.1.0",
         "@koa/router": "^10.0.0",
         "@prisma/client": "2.20.1",
         "bcryptjs": "^2.4.3",

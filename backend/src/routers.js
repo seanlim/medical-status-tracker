@@ -52,13 +52,19 @@ users.post('/login', async (ctx, next) => {
     return;
 });
 
+users.post('/logout', async (ctx, next) => {
+    ctx.cookies.set('token', null);
+    ctx.statis = 200;
+    return;
+});
+
 // fetches medical statuses from tracking Sheets document
 medicalStatus.get('/medical-statuses', async (ctx, next) => {
-    const data = await fetchMedicalStatuses();
-    delete data.undefined;
-    delete data[''];
+    const medicalStatuses = await fetchMedicalStatuses();
+    delete medicalStatuses.undefined;
+    delete medicalStatuses[''];
     ctx.type = 'application/json';
     ctx.status = 200;
-    ctx.body = data;
+    ctx.body = { data: medicalStatuses };
     return;
 });

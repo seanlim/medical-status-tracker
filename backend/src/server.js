@@ -1,7 +1,9 @@
 import Koa from 'koa';
+import cors from '@koa/cors';
 import dotenv from 'dotenv';
 dotenv.config();
 
+import credentials from './middleware/credentials';
 import { users, medicalStatus, publik } from './routers';
 import { seedM39S } from './seeds';
 
@@ -9,6 +11,10 @@ const app = new Koa();
 
 // seed m39s application user
 seedM39S();
+
+// cors, headers
+app.use(credentials());
+app.use(cors());
 
 // logger
 app.use(async (ctx, next) => {

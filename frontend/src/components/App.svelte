@@ -1,3 +1,7 @@
+<script>
+    import Login from './Login.svelte';
+</script>
+
 <div>
-    hello world
+    <Login />
 </div>
