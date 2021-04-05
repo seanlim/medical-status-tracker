@@ -1,5 +1,6 @@
 <script>
     import fetch from '../fetch';
+    import { navigate } from 'svelte-routing';
 
     let username = '',
         password = '';
@@ -15,7 +16,7 @@
                 password,
             },
         })
-            .then((res) => {})
+            .then((res) => navigate('/', { replace: true }))
             .catch((e) => (error = e));
     };
 </script>

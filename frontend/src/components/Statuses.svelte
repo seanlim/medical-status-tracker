@@ -4,19 +4,28 @@
     import fetch from '../fetch';
 
     let data = null,
+        error = null,
         selectedCoy = null;
 
     onMount(() =>
-        fetch('medical-statuses').then((res) => {
-            data = res.data;
-            selectedCoy = Object.keys(data)[0];
-        })
+        fetch('medical-statuses')
+            .then((res) => {
+                data = res.data;
+                selectedCoy = Object.keys(data)[0];
+            })
+            .catch((err) => {
+                error = err;
+            })
     );
 </script>
 
 <div class="container">
     {#if data === null}
-        <p>loading...</p>
+        {#if error !== null}
+            {error}
+        {:else}
+            <p>loading...</p>
+        {/if}
     {:else}
         <select bind:value={selectedCoy}>
             {#each Object.keys(data) as coy}
