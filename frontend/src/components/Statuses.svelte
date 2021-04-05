@@ -34,24 +34,23 @@
         </select>
         <table>
             <tr>
-                <th>initials</th>
-                <th>platoon</th>
-                <th>status</th>
-                <th>reasoning</th>
-                <th>start</th>
-                <th>end</th>
-                <th>duration</th>
+                <th>Initials</th>
+                <th>Platoon</th>
+                <th>Status</th>
+                <th>Start - End</th>
                 <th />
             </tr>
             {#each data[selectedCoy] as record}
-                <tr>
+                <tr class:active={record.statusActive}>
                     <td>{record.initials}</td>
                     <td>{record.platoon}</td>
-                    <td>{record.status}</td>
-                    <td>{record.reasoning}</td>
-                    <td>{record.start}</td>
-                    <td>{record.end}</td>
-                    <td>{record.duration}</td>
+                    <td
+                        >{record.status}
+                        {record.reasoning !== ''
+                            ? `(${record.reasoning})`
+                            : ''}</td
+                    >
+                    <td>{record.start} - {record.end}</td>
                 </tr>
             {/each}
         </table>
@@ -60,5 +59,26 @@
 
 <style>
     .container {
+        width: 100vw;
+    }
+
+    th {
+        position: sticky;
+        top: 0;
+        background: white;
+    }
+    th,
+    td {
+        text-align: left;
+        max-width: 25vw;
+        padding: 10px;
+    }
+
+    tr {
+        content-visibility: auto;
+    }
+
+    .active {
+        background: green;
     }
 </style>

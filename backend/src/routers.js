@@ -63,8 +63,6 @@ users.post('/logout', async (ctx, next) => {
 // fetches medical statuses from tracking Sheets document
 medicalStatus.get('/medical-statuses', async (ctx, next) => {
     const medicalStatuses = await fetchMedicalStatuses();
-    delete medicalStatuses.undefined;
-    delete medicalStatuses[''];
     ctx.type = 'application/json';
     ctx.status = 200;
     ctx.body = { data: medicalStatuses };
