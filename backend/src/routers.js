@@ -55,7 +55,8 @@ users.post('/login', async (ctx, next) => {
 
 users.post('/logout', async (ctx, next) => {
     ctx.cookies.set('token', null);
-    ctx.statis = 200;
+    ctx.body = { data: { message: 'Logged out successfully' } };
+    ctx.status = 200;
     return;
 });
 
