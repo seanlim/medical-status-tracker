@@ -19,14 +19,17 @@ app.context.db = new PrismaClient();
 seedM39S(app.context.db);
 
 // cors, headers
-console.log('mark');
-console.info(process.env.FRONTEND_URL);
 app.use(credentials());
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL,
-  })
-);
+if (process.env.FRONTEND_ORIGIN === 'localhost') {
+  app.use(cors());
+} else {
+  app.use(
+    cors({
+      origin: process.env.FRONTEND_ORIGIN,
+      credentials: true,
+    })
+  );
+}
 app.use(bodyParser());
 app.use(bearerToken());
 
