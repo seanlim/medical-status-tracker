@@ -6,6 +6,7 @@ import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 dotenv.config();
 
+import credentials from './middleware/credentials';
 import { users, medicalStatus, publik } from './routers';
 import { seedM39S } from './seeds';
 
@@ -20,6 +21,7 @@ seedM39S(app.context.db);
 // cors, headers
 console.log('mark');
 console.info(process.env.FRONTEND_URL);
+app.use(credentials());
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
