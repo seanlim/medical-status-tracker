@@ -44,15 +44,11 @@ users.post('/login', async (ctx, next) => {
   }
   // create, sign, and set jwt
   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-  ctx.cookies.set('token', token, {
-    httpOnly: false,
-    sameSite: 'none',
-    secure: true,
-  });
+
   // remove sensitive fields and return json data
   delete user.password;
 
-  ctx.body = { data: user };
+  ctx.body = { data: { ...user, token } };
   ctx.status = 200;
   return;
 });

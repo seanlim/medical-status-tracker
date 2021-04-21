@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 export function auth() {
   return async (ctx, next) => {
-    const token = ctx.cookies.get('token');
+    const token = ctx.request.token;
     if (!token) {
       ctx.status = 401;
       ctx.body = {

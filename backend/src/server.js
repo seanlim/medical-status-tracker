@@ -1,10 +1,11 @@
 import Koa from 'koa';
 import cors from '@koa/cors';
+import bodyParser from 'koa-bodyparser';
+import bearerToken from 'koa-bearer-token';
 import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import credentials from './middleware/credentials';
 import { users, medicalStatus, publik } from './routers';
 import { seedM39S } from './seeds';
 
@@ -17,12 +18,15 @@ app.context.db = new PrismaClient();
 seedM39S(app.context.db);
 
 // cors, headers
-app.use(credentials());
+console.log('mark');
+console.info(process.env.FRONTEND_URL);
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
   })
 );
+app.use(bodyParser());
+app.use(bearerToken());
 
 // logger
 app.use(async (ctx, next) => {

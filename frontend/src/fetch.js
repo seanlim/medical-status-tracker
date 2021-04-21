@@ -1,4 +1,6 @@
 import unfetch from 'isomorphic-unfetch';
+import { token } from './stores';
+import { get } from 'svelte/store';
 
 const { SNOWPACK_PUBLIC_API_URL } = import.meta.env;
 
@@ -8,7 +10,7 @@ export default async function fetch(path, { body, ...options } = {}) {
     headers: {
       ...options.headers,
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Credentials': 'true',
+      Authorization: `Bearer ${get(token)}`,
     },
     body: JSON.stringify(body),
     credentials: 'include',

@@ -20,6 +20,7 @@
     "googleapis": "39",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
+    "koa-bearer-token": "^1.0.0",
     "koa-bodyparser": "^4.3.0",
     "lodash": "^4.17.21",
     "moment-timezone": "^0.5.33",
