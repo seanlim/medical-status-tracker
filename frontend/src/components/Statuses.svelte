@@ -5,7 +5,8 @@
 
     let data = null,
         error = null,
-        selectedCoy = null;
+        selectedCoy = null,
+        initialsQuery = '';
 
     onMount(() =>
         fetch('medical-statuses')
@@ -27,33 +28,40 @@
             <p>loading...</p>
         {/if}
     {:else}
-        <select bind:value={selectedCoy}>
-            {#each Object.keys(data) as coy}
-                <option value={coy}>{coy}</option>
-            {/each}
-        </select>
-        <table>
-            <tr>
-                <th>Initials</th>
-                <th>Platoon</th>
-                <th>Status</th>
-                <th>Start - End</th>
-                <th />
-            </tr>
-            {#each data[selectedCoy] as record}
-                <tr class:active={record.statusActive}>
-                    <td>{record.initials}</td>
-                    <td>{record.platoon}</td>
-                    <td
-                        >{record.status}
-                        {record.reasoning !== ''
-                            ? `(${record.reasoning})`
-                            : ''}</td
-                    >
-                    <td>{record.start} - {record.end}</td>
-                </tr>
-            {/each}
-        </table>
+        <div class="filters">
+            Coy: <select bind:value={selectedCoy}>
+                {#each Object.keys(data) as coy}
+                    <option value={coy}>{coy}</option>
+                {/each}
+            </select>
+            <input
+                bind:value={initialsQuery}
+                type="text"
+                placeholder="Search initials..."
+            />
+        </div>
+        {#each data[selectedCoy] as record}
+            <div
+                class:hidden={initialsQuery !== '' &&
+                    !record.initials.includes(initialsQuery.toUpperCase())}
+                class:active={record.statusActive}
+                class="record"
+            >
+                <h3>{`${record.initials}, ${record.platoon}`}</h3>
+                <div class="record-content">
+                    <p class="record-description">
+                        {`${record.status} ${
+                            record.reasoning !== ''
+                                ? `(${record.reasoning})`
+                                : ''
+                        }`}
+                    </p>
+                    <p class="record-date">
+                        {`${record.start} - ${record.end}`}
+                    </p>
+                </div>
+            </div>
+        {/each}
     {/if}
 </div>
 
@@ -62,23 +70,34 @@
         width: 100vw;
     }
 
-    th {
-        position: sticky;
-        top: 0;
-        background: white;
-    }
-    th,
-    td {
-        text-align: left;
-        max-width: 25vw;
-        padding: 10px;
-    }
-
-    tr {
-        content-visibility: auto;
-    }
-
     .active {
-        background: green;
+        background: rgba(109, 250, 109, 0.473);
+    }
+
+    .record {
+        border-bottom: #f5f5f5 solid 1px;
+        padding: 5px;
+    }
+
+    .record-description {
+        margin: 5px 0;
+    }
+
+    .record-date {
+        color: #555555;
+        font-weight: 600;
+    }
+
+    .filters {
+        padding: 10px 5px;
+    }
+
+    h3,
+    p {
+        margin: 0;
+    }
+
+    .hidden {
+        display: none;
     }
 </style>
