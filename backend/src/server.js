@@ -17,29 +17,34 @@ seedM39S(app.context.db);
 
 // cors, headers
 app.use(credentials());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+  })
+);
 
 // logger
 app.use(async (ctx, next) => {
-    await next();
-    const rt = ctx.response.get('X-Response-Time');
-    console.log(`${ctx.method} ${ctx.url} - ${rt}`);
+  await next();
+  const rt = ctx.response.get('X-Response-Time');
+  console.log(`${ctx.method} ${ctx.url} - ${rt}`);
 });
 
 // x-response-time
 app.use(async (ctx, next) => {
-    const start = Date.now();
-    await next();
-    const ms = Date.now() - start;
-    ctx.set('X-Response-Time', `${ms}ms`);
+  const start = Date.now();
+  await next();
+  const ms = Date.now() - start;
+  ctx.set('X-Response-Time', `${ms}ms`);
 });
 
-app.use(medicalStatus.routes())
-    .use(users.routes())
-    .use(publik.routes())
-    .use(medicalStatus.allowedMethods())
-    .use(users.allowedMethods())
-    .use(publik.allowedMethods());
+app
+  .use(medicalStatus.routes())
+  .use(users.routes())
+  .use(publik.routes())
+  .use(medicalStatus.allowedMethods())
+  .use(users.allowedMethods())
+  .use(publik.allowedMethods());
 
 app.listen(process.env.PORT);
 
