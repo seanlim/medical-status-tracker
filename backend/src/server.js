@@ -9,6 +9,7 @@ import { users, medicalStatus, publik } from './routers';
 import { seedM39S } from './seeds';
 
 const app = new Koa();
+app.proxy = true;
 
 app.context.db = new PrismaClient();
 
