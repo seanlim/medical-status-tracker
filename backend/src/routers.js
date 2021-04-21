@@ -47,7 +47,6 @@ users.post('/login', async (ctx, next) => {
   ctx.cookies.set('token', token, {
     httpOnly: false,
     sameSite: 'none',
-    secure: true,
   });
   // remove sensitive fields and return json data
   delete user.password;
