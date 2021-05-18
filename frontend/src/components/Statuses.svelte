@@ -7,7 +7,9 @@
   let data = null,
     error = null,
     selectedCoy = null,
-    initialsQuery = '';
+    selectedPlt = 'all',
+    initialsQuery = '',
+    showAll = false;
 
   onMount(() =>
     fetch('medical-statuses')
@@ -41,11 +43,20 @@
         type="text"
         placeholder="Search initials..."
       />
+      Platoon:
+      <select bind:value={selectedPlt}>
+        {#each ['all', '1', '2', '3', '4', '5', '6', 'HQ'] as plt}
+          <option value={plt}>{plt}</option>
+        {/each}
+      </select>
+      <input type="checkbox" bind:checked={showAll} /> Show all records
     </div>
     {#each data[selectedCoy] as record}
       <div
-        class:hidden={initialsQuery !== '' &&
-          !record.initials.includes(initialsQuery.toUpperCase())}
+        class:hidden={(initialsQuery !== '' &&
+          !record.initials.includes(initialsQuery.toUpperCase())) ||
+          (!showAll && !record.statusActive) ||
+          (selectedPlt !== 'all' && record.platoon !== selectedPlt)}
         class:active={record.statusActive}
         class="record"
       >
@@ -71,7 +82,7 @@
   }
 
   .active {
-    background: rgba(109, 250, 109, 0.473);
+    background: rgba(255, 190, 106, 0.473);
   }
 
   .record {
