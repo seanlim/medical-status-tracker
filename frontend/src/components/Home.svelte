@@ -10,7 +10,10 @@
     fetch('logout', {
       method: 'POST',
     })
-      .then((res) => navigate('/login', { replace: true }))
+      .then((res) => {
+        token.unset();
+        navigate('/login', { replace: true });
+      })
       .catch(console.error);
   };
 
