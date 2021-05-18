@@ -1,20 +1,13 @@
 <script>
-  import { Link, navigate } from 'svelte-routing';
+  import { navigate } from 'svelte-routing';
   import { token } from '../stores';
 
-  import fetch from '../fetch';
   import { onMount } from 'svelte';
+  import Nav from './Nav.svelte';
 
-  const onLogoutClicked = (e) => {
+  const onMedicalStatusClicked = (e) => {
     e.preventDefault();
-    fetch('logout', {
-      method: 'POST',
-    })
-      .then((res) => {
-        token.unset();
-        navigate('/login', { replace: true });
-      })
-      .catch(console.error);
+    navigate('/medical-status');
   };
 
   onMount(() => {
@@ -24,7 +17,21 @@
   });
 </script>
 
-<div>
-  <Link to="/medical-status">Medical Statuses</Link>
-  <button on:click={onLogoutClicked}>logout</button>
+<Nav title="M39 System" />
+<div class="menu">
+  <h4>Apps</h4>
+  <button on:click={onMedicalStatusClicked}> Medical Statuses </button>
 </div>
+
+<style>
+  .menu {
+    padding: 0 10px;
+  }
+
+  .menu button {
+    width: 100%;
+    color: rgb(22, 142, 255);
+    background: white;
+    border: solid 2px rgb(22, 142, 255);
+  }
+</style>
