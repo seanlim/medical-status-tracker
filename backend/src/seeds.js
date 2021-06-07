@@ -1,13 +1,16 @@
 import bcrypt from 'bcryptjs';
 
+import { ROLES } from '~/constants';
+
 export async function seedM39S(db) {
   const adminUser = await db.user.findUnique({
     where: {
-      username: 'm39s',
+      username: 'admin',
     },
   });
 
   if (!adminUser) {
+    console.info('Admin user not set up, seeding...');
     // create password hash
     const salt = await bcrypt.genSalt(4);
     const passwordHash = await bcrypt.hash(process.env.M39S_PASSWORD, salt);
@@ -15,16 +18,18 @@ export async function seedM39S(db) {
     try {
       await db.user.create({
         data: {
-          username: 'm39s',
+          username: 'admin',
           password: passwordHash,
+          role: ROLES.ADMIN,
+          name: 'Admin Account',
         },
       });
-      console.info('Seeded m39s user');
+      console.info('✅ Seeded admin user');
     } catch (error) {
       console.error(error);
-      throw new Error('Failed to create m39s user');
+      throw new Error('Failed to create admin user');
     }
   }
 
-  console.info('M39s admin user set up');
+  console.info('✅ Admin user is present');
 }

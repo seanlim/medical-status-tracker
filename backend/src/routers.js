@@ -3,8 +3,8 @@ import bodyParser from 'koa-bodyparser';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import { fetchMedicalStatuses } from './sheetsAPI';
-import { auth } from './middleware/auth';
+import { fetchMedicalStatuses } from '~/sheetsAPI';
+import { auth } from '~/middleware/auth';
 
 export const publik = new Router();
 export const medicalStatus = new Router();
