@@ -57,7 +57,8 @@ users.get('/roles', auth(ROLES.ADMIN), async (ctx, next) => {
   return;
 });
 
-users.post('/new', async (ctx, next) => {
+users.post('/create-user', auth(ROLES.ADMIN), async (ctx, next) => {
+  const { db } = ctx;
   const { username, password, confirmPassword, name, role } = ctx.request.body;
 
   // Validate submission
@@ -65,7 +66,7 @@ users.post('/new', async (ctx, next) => {
   if (
     !isEmpty(submissionValues.filter(isNil)) ||
     !isEmpty(submissionValues.filter(isEmpty)) ||
-    !ROLES.includes(role)
+    !Object.values(ROLES).includes(role)
   ) {
     ctx.body = { error: { message: 'Invalid request.' } };
     ctx.status = 400;

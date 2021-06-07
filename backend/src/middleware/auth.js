@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-export function auth(role) {
+export function auth(...roles) {
   return async (ctx, next) => {
     const token = ctx.request.token;
     if (!token) {
@@ -44,7 +44,7 @@ export function auth(role) {
 
     ctx.user = user;
 
-    if (user.role !== role) {
+    if (!roles.includes(user.role)) {
       ctx.status = 403;
       ctx.body = {
         error: {
