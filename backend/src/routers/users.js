@@ -152,7 +152,6 @@ users.post('/create-user', auth(ROLES.ADMIN), async (ctx, next) => {
   }
 
   // create user
-  console.info('Creating new user...');
   // create password hash
   const salt = await bcrypt.genSalt(4);
   const passwordHash = await bcrypt.hash(password, salt);
@@ -166,7 +165,6 @@ users.post('/create-user', auth(ROLES.ADMIN), async (ctx, next) => {
         name,
       },
     });
-    console.info('✅ Created new user');
   } catch (error) {
     console.error(error);
     ctx.body = {

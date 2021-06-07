@@ -14,7 +14,7 @@ enum Role {
   ADMIN
   ALPHA
   BRAVO
-  CHARLIE
+  CEC
   BNHQ
 }
 

@@ -46,6 +46,8 @@
         <p class="empty">No users</p>
       {/if}
     </table>
+  {:catch error}
+    <p>{error}</p>
   {/await}
 </div>
 
