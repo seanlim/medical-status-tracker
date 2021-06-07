@@ -50,24 +50,35 @@
   {:then serverRoles}
     <form on:submit={handleFormSubmit}>
       <p>Name</p>
-      <input type="text" placeholder="Name" bind:value={name} />
+      <input type="text" placeholder="Name" bind:value={name} required />
       <p>Username</p>
-      <input type="text" placeholder="Username" bind:value={username} />
+      <input
+        type="text"
+        placeholder="Username"
+        bind:value={username}
+        required
+      />
       <p>Password</p>
-      <input type="password" placeholder="Password" bind:value={password} />
+      <input
+        type="password"
+        placeholder="Password"
+        bind:value={password}
+        required
+      />
       <p>Confirm Password</p>
       <input
         type="password"
         placeholder="Confirm Password"
         bind:value={confirmPassword}
+        required
       />
-      <p>User Access</p>
+      <p>User Role</p>
       <select bind:value={role}>
         {#each serverRoles as r}
           <option value={r}>{r}</option>
         {/each}
       </select><br />
-      {error}
+      <p class="error">{error}</p>
       <input type="submit" />
     </form>
   {:catch err}

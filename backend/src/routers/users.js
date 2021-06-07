@@ -57,6 +57,79 @@ users.get('/roles', auth(ROLES.ADMIN), async (ctx, next) => {
   return;
 });
 
+users.delete('/delete-user', auth(ROLES.ADMIN), async (ctx, next) => {
+  const { db, user } = ctx;
+  const { id } = ctx.request.body;
+
+  // cannot delete self
+  if (id === user.id) {
+    ctx.body = { error: { message: "You can't delete yourself!" } };
+    ctx.status = 400;
+    return;
+  }
+
+  let userDelete;
+  try {
+    userDelete = await db.user.findUnique({ where: { id } });
+    if (!userDelete) throw new Error();
+  } catch (error) {
+    console.error(error);
+    ctx.body = {
+      error: {
+        message:
+          "An error has occured while deleting the user. Either the user doesn't exist, or the user has already been deleted.",
+      },
+    };
+    ctx.status = 500;
+    return;
+  }
+
+  // cannot delete genesis admin accout
+  if (userDelete.username === 'admin') {
+    ctx.body = { error: { message: "You can't delete the admin" } };
+    ctx.status = 400;
+    return;
+  }
+
+  try {
+    await db.user.delete({
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    ctx.body = {
+      error: {
+        message:
+          "An error has occured while deleting the user. Either the user doesn't exist, or the user has already been deleted.",
+      },
+    };
+    ctx.status = 500;
+    return;
+  }
+
+  ctx.body = { data: { message: 'success!' } };
+  ctx.status = 200;
+  return;
+});
+
+users.get('/users', auth(ROLES.ADMIN), async (ctx, next) => {
+  const { db, user } = ctx;
+  let users = await db.user.findMany({
+    select: {
+      name: true,
+      id: true,
+      role: true,
+    },
+  });
+
+  ctx.type = 'application/json';
+  ctx.body = { data: users };
+  ctx.status = 200;
+  return;
+});
+
 users.post('/create-user', auth(ROLES.ADMIN), async (ctx, next) => {
   const { db } = ctx;
   const { username, password, confirmPassword, name, role } = ctx.request.body;
@@ -96,7 +169,19 @@ users.post('/create-user', auth(ROLES.ADMIN), async (ctx, next) => {
     console.info('✅ Created new user');
   } catch (error) {
     console.error(error);
+    ctx.body = {
+      error: {
+        message:
+          'An error occured while creating a new user. Try using another username, else please contact the developer.',
+      },
+    };
+    ctx.status = 500;
+    return;
   }
+
+  ctx.body = { data: { message: 'success!' } };
+  ctx.status = 200;
+  return;
 });
 
 module.exports = users;

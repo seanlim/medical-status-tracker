@@ -27,3 +27,19 @@ input[type='submit'] {
   border: none;
   padding: 10px;
 }
+
+button.delete {
+  background-color: red;
+}
+
+button:hover {
+  opacity: 0.6;
+}
+
+button:active {
+  opacity: 1;
+}
+
+.error {
+  color: red;
+}

@@ -14,6 +14,11 @@
     navigate('/create-user');
   };
 
+  const onManageUsersClicked = (e) => {
+    e.preventDefault();
+    navigate('/manage-users');
+  };
+
   onMount(() => {
     if ($token === null || $token === '') {
       navigate('/login', { replace: true });
@@ -27,6 +32,7 @@
     <button on:click={onMedicalStatusClicked}> Medical Statuses </button>
     {#if $user.role === 'ADMIN'}
       <button on:click={onAddUserClicked}> Add User </button>
+      <button on:click={onManageUsersClicked}> Manage Users </button>
     {/if}
   {/if}
 </div>
