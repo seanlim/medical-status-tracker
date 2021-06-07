@@ -1,8 +1,7 @@
 <script>
   import { onMount } from 'svelte';
 
-  import fetch from '../fetch';
-  import Nav from './Nav.svelte';
+  import fetch from '~/fetch';
 
   let data = null,
     error = null,
@@ -24,7 +23,6 @@
 </script>
 
 <div class="container">
-  <Nav title="Medical Statuses" />
   {#if data === null}
     {#if error !== null}
       {error}

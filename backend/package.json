@@ -7,7 +7,7 @@
     "migrate": "prisma migrate deploy",
     "build": "babel src -d lib",
     "start": "yarn migrate && node .",
-    "dev": "yarn build && node ."
+    "dev": "rm -rfv lib && yarn build && node ."
   },
   "dependencies": {
     "@babel/cli": "^7.2.3",

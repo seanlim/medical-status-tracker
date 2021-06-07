@@ -1,13 +1,17 @@
 <script>
-  import { navigate } from 'svelte-routing';
-  import { token } from '../stores';
-
   import { onMount } from 'svelte';
-  import Nav from './Nav.svelte';
+  import { navigate } from 'svelte-routing';
+
+  import { token, user } from '~/stores';
 
   const onMedicalStatusClicked = (e) => {
     e.preventDefault();
     navigate('/medical-status');
+  };
+
+  const onAddUserClicked = (e) => {
+    e.preventDefault();
+    navigate('/create-user');
   };
 
   onMount(() => {
@@ -17,10 +21,14 @@
   });
 </script>
 
-<Nav title="M39 System" />
 <div class="menu">
-  <h4>Apps</h4>
-  <button on:click={onMedicalStatusClicked}> Medical Statuses </button>
+  {#if $user !== null}
+    <h4>Welcome, {$user.name}</h4>
+    <button on:click={onMedicalStatusClicked}> Medical Statuses </button>
+    {#if $user.role === 'ADMIN'}
+      <button on:click={onAddUserClicked}> Add User </button>
+    {/if}
+  {/if}
 </div>
 
 <style>
@@ -33,5 +41,6 @@
     color: rgb(22, 142, 255);
     background: white;
     border: solid 2px rgb(22, 142, 255);
+    margin-bottom: 15px;
   }
 </style>

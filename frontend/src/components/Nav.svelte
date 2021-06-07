@@ -1,8 +1,8 @@
 <script>
   import { navigate } from 'svelte-routing';
-  import { token } from '../stores';
+  import { token, user } from '~/stores';
 
-  import fetch from '../fetch';
+  import fetch from '~/fetch';
 
   export let title;
 
@@ -15,6 +15,7 @@
     })
       .then((res) => {
         token.unset();
+        user.unset();
         navigate('/login', { replace: true });
       })
       .catch(console.error);

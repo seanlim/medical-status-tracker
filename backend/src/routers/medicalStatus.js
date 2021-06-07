@@ -5,7 +5,7 @@ import { fetchMedicalStatuses } from '~/sheetsAPI';
 import { ROLES } from '~/constants';
 import { auth } from '~/middleware/auth';
 
-export const medicalStatus = new Router();
+const medicalStatus = new Router();
 
 medicalStatus.use(auth(ROLES.ADMIN)).use(bodyParser());
 
@@ -17,3 +17,5 @@ medicalStatus.get('/medical-statuses', async (ctx, next) => {
   ctx.body = { data: medicalStatuses };
   return;
 });
+
+module.exports = medicalStatus;

@@ -8,7 +8,7 @@ import { ROLES } from '~/constants';
 import { auth } from '~/middleware/auth';
 import { isEmpty } from 'lodash';
 
-export const users = new Router();
+const users = new Router();
 users.use(bodyParser());
 
 users.post('/login', async (ctx, next) => {
@@ -50,14 +50,13 @@ users.post('/logout', async (ctx, next) => {
   return;
 });
 
-users.use('/roles', auth(ROLES.ADMIN));
-users.get('/roles', (ctx, next) => {
+users.get('/roles', auth(ROLES.ADMIN), async (ctx, next) => {
+  ctx.type = 'application/json';
   ctx.body = { data: Object.values(ROLES) };
   ctx.status = 200;
   return;
 });
 
-users.use('/new', auth(ROLES.ADMIN));
 users.post('/new', async (ctx, next) => {
   const { username, password, confirmPassword, name, role } = ctx.request.body;
 
@@ -78,7 +77,7 @@ users.post('/new', async (ctx, next) => {
     return;
   }
 
-  // Create user
+  // create user
   console.info('Creating new user...');
   // create password hash
   const salt = await bcrypt.genSalt(4);
@@ -98,3 +97,5 @@ users.post('/new', async (ctx, next) => {
     console.error(error);
   }
 });
+
+module.exports = users;

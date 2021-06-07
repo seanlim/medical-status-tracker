@@ -27,4 +27,28 @@ const createTokenStore = () => {
     },
   };
 };
+
+const createUserStore = () => {
+  const localUserStore = storage.getItem('user');
+
+  const { subscribe, set, update } = writable(JSON.parse(localUserStore));
+
+  return {
+    subscribe,
+    set: (user) => {
+      storage.setItem('user', JSON.stringify(user));
+      set(user);
+    },
+    unset: () => {
+      storage.removeItem('user');
+      set(null);
+    },
+    update: (user) => {
+      storage.setItem('user', JSON.stringify(user));
+      update(user);
+    },
+  };
+};
+
 export const token = createTokenStore();
+export const user = createUserStore();

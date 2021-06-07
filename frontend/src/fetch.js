@@ -1,5 +1,5 @@
 import unfetch from 'isomorphic-unfetch';
-import { token } from './stores';
+import { token } from '~/stores';
 import { get } from 'svelte/store';
 
 const { SNOWPACK_PUBLIC_API_URL } = import.meta.env;

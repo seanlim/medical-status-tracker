@@ -2,7 +2,7 @@
   import fetch from '../fetch';
   import { navigate } from 'svelte-routing';
 
-  import { token } from '../stores';
+  import { token, user } from '~/stores';
 
   let username = '',
     password = '';
@@ -20,6 +20,7 @@
     })
       .then((res) => {
         token.set(res.data.token);
+        user.set({ name: res.data.name, role: res.data.role });
         navigate('/', { replace: true });
       })
       .catch((e) => (error = e));

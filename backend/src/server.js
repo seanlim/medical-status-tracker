@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import credentials from './middleware/credentials';
-import { users, medicalStatus, publik } from './routers';
+import { users, medicalStatus, publik } from '~/routers';
 import { seedM39S } from './seeds';
 
 const app = new Koa();
@@ -49,13 +49,14 @@ app.use(async (ctx, next) => {
 });
 
 app
-  .use(medicalStatus.routes())
-  .use(users.routes())
-  .use(publik.routes())
-  .use(medicalStatus.allowedMethods())
-  .use(users.allowedMethods())
-  .use(publik.allowedMethods());
+  .use(medicalStatus.routes(), medicalStatus.allowedMethods())
+  .use(users.routes(), users.allowedMethods())
+  .use(publik.routes(), publik.allowedMethods());
 
 app.listen(process.env.PORT);
+
+console.info(users.stack.map((i) => i.path));
+console.info(publik.stack.map((i) => i.path));
+console.info(medicalStatus.stack.map((i) => i.path));
 
 console.info(`Server running on port ${process.env.PORT}`);
