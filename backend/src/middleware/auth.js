@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-export function auth() {
+export function auth(role) {
   return async (ctx, next) => {
     const token = ctx.request.token;
     if (!token) {
@@ -43,6 +43,16 @@ export function auth() {
     }
 
     ctx.user = user;
+
+    if (user.role !== role) {
+      ctx.status = 403;
+      ctx.body = {
+        error: {
+          message: 'Unauthorized',
+        },
+      };
+      return;
+    }
 
     await next();
   };

@@ -5,12 +5,13 @@ import jwt from 'jsonwebtoken';
 
 import { fetchMedicalStatuses } from '~/sheetsAPI';
 import { auth } from '~/middleware/auth';
+import { ROLES } from '~/constants';
 
 export const publik = new Router();
 export const medicalStatus = new Router();
 export const users = new Router();
 
-medicalStatus.use(auth()).use(bodyParser());
+medicalStatus.use(auth(ROLES.ADMIN)).use(bodyParser());
 users.use(bodyParser());
 
 // test endpoint
