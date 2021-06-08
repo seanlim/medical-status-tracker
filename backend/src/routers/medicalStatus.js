@@ -40,7 +40,8 @@ medicalStatus.put(
       ctx.status = 500;
       return;
     }
-    if (user.role !== ROLES.ADMIN && user.role !== status.coy) {
+    const record = records[0];
+    if (user.role !== ROLES.ADMIN && user.role !== record.coy) {
       ctx.body = { error: { message: 'Unauthorized' } };
       ctx.status = 403;
       return;
