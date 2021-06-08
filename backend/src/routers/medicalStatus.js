@@ -1,7 +1,8 @@
 import Router from '@koa/router';
 import bodyParser from 'koa-bodyparser';
+import isEmpty from 'lodash/isEmpty';
 
-import { getMedicalStatuses } from '~/sheetsAPI';
+import { getMedicalStatuses, updateApprovalStatus } from '~/sheetsAPI';
 import { ROLES } from '~/constants';
 import { auth } from '~/middleware/auth';
 
@@ -21,6 +22,40 @@ medicalStatus.get(
     ctx.type = 'application/json';
     ctx.status = 200;
     ctx.body = { data: medicalStatuses };
+    return;
+  }
+);
+
+medicalStatus.put(
+  '/update-status',
+  auth(ROLES.ADMIN, ROLES.ALPHA, ROLES.BRAVO, ROLES.BNHQ),
+  async (ctx, next) => {
+    const { sheets, user } = ctx;
+    const { id, status } = ctx.request.body;
+    // check permissions
+    let records = await getMedicalStatuses(sheets);
+    records = records.filter((s) => s.id === id);
+    if (isEmpty(records)) {
+      ctx.body = { error: { message: 'Record does not exist' } };
+      ctx.status = 500;
+      return;
+    }
+    if (user.role !== ROLES.ADMIN && user.role !== status.coy) {
+      ctx.body = { error: { message: 'Unauthorized' } };
+      ctx.status = 403;
+      return;
+    }
+    // update
+    try {
+      await updateApprovalStatus(sheets, id, status);
+    } catch (error) {
+      console.error(error);
+      ctx.body = { error: { message: 'Failed to update status' } };
+      ctx.status = 500;
+      return;
+    }
+
+    ctx.status = 200;
     return;
   }
 );

@@ -14,6 +14,17 @@
     plts = uniq(data.map((r) => r.platoon));
     return data;
   });
+
+  const handleUpdateStatus = async (id, e) => {
+    console.log(e.target.value);
+    await fetch('update-status', {
+      method: 'PUT',
+      body: {
+        id,
+        status: e.target.value,
+      },
+    });
+  };
 </script>
 
 <div class="container">
@@ -53,6 +64,7 @@
         <th>Status</th>
         <th>Start</th>
         <th>End</th>
+        <th>Approved</th>
       </thead>
       {#each rows as row}
         <tr
@@ -69,6 +81,16 @@
           <td>{row.status}</td>
           <td>{row.start}</td>
           <td>{row.end}</td>
+          <td
+            ><select
+              value={row.approved}
+              on:blur={(e) => handleUpdateStatus(row.id, e)}
+            >
+              <option value="0">Pending</option>
+              <option value="1">Approved</option>
+              <option value="2">Rejected</option>
+            </select></td
+          >
         </tr>
       {/each}
     </table>

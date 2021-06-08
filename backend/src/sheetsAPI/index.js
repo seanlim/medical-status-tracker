@@ -13,6 +13,17 @@ export async function createGoogleSheetsClient() {
   return sheets;
 }
 
+export async function updateApprovalStatus(sheets, index, status) {
+  return sheets.spreadsheets.values.update({
+    spreadsheetId: process.env.SPREADSHEET_ID,
+    range: `Master!L${index + 2}`,
+    valueInputOption: 'USER_ENTERED',
+    resource: {
+      values: [[status]],
+    },
+  });
+}
+
 export async function getMedicalStatuses(sheets) {
   const currentDate = moment.tz('Asia/Singapore');
 
@@ -22,12 +33,15 @@ export async function getMedicalStatuses(sheets) {
       range: 'Master!A2:L',
     })
     .then((results) => results.data.values)
-    .then((rows) => rows.map((row) => parseRow(row, currentDate)));
+    .then((rows) =>
+      rows.map((row, index) => parseRow(row, currentDate, index))
+    );
 }
 
-function parseRow(row, currentDate) {
+function parseRow(row, currentDate, index) {
   const endDate = moment(row[6], 'DD-MMM-YYYY');
   return {
+    id: index,
     coy: row[0],
     platoon: row[1],
     name: row[2],
@@ -39,6 +53,7 @@ function parseRow(row, currentDate) {
     recordID: row[8],
     recordLocation: row[9],
     dateSubmit: row[10],
+    approved: row[11],
     // Computed Fields
     _approved: ApprovedMap[row[11]],
     _statusActive:
