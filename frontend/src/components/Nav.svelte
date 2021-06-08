@@ -24,7 +24,7 @@
 
 <div class="navigation">
   <h3 on:click={onTitleClicked} class="header">{title}</h3>
-  <button class="logout-button" on:click={onLogoutClicked}>logout</button>
+  <button on:click={onLogoutClicked}>logout</button>
 </div>
 
 <style>
@@ -40,11 +40,13 @@
     margin-bottom: 5px;
     position: sticky;
     top: 0;
+    height: 60px;
   }
   h3 {
     flex: 1;
   }
   .navigation button {
     height: 40px;
+    font-size: 18px;
   }
 </style>

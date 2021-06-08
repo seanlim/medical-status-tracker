@@ -16,7 +16,6 @@
   });
 
   const handleUpdateStatus = async (id, e) => {
-    console.log(e.target.value);
     await fetch('update-status', {
       method: 'PUT',
       body: {
@@ -57,43 +56,51 @@
         {/each}
       </select>
     </p>
-    <table>
-      <thead>
-        <th>Name</th>
-        <th>Reason</th>
-        <th>Status</th>
-        <th>Start</th>
-        <th>End</th>
-        <th>Approved</th>
-      </thead>
-      {#each rows as row}
-        <tr
-          class:hidden={(!showAll && !row._statusActive && !row._lightDuty) ||
-            (coyFilter !== 'all' && row.coy !== coyFilter) ||
-            (pltFilter !== 'all' && row.platoon !== pltFilter) ||
-            (nameFilter !== '' &&
-              !row.name.toLowerCase().includes(nameFilter.toLowerCase()))}
-          class:light-duty={row._lightDuty}
-          class:active={row._statusActive}
-        >
-          <td>{row.name}</td>
-          <td>{row.reason}</td>
-          <td>{row.status}</td>
-          <td>{row.start}</td>
-          <td>{row.end}</td>
-          <td
-            ><select
-              value={row.approved}
-              on:blur={(e) => handleUpdateStatus(row.id, e)}
-            >
-              <option value="0">Pending</option>
-              <option value="1">Approved</option>
-              <option value="2">Rejected</option>
-            </select></td
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <th>Name</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>MC ID</th>
+          <th>Location</th>
+          <th>Date Submit</th>
+          <th>Approved</th>
+        </thead>
+        {#each rows as row}
+          <tr
+            class:hidden={(!showAll && !row._statusActive && !row._lightDuty) ||
+              (coyFilter !== 'all' && row.coy !== coyFilter) ||
+              (pltFilter !== 'all' && row.platoon !== pltFilter) ||
+              (nameFilter !== '' &&
+                !row.name.toLowerCase().includes(nameFilter.toLowerCase()))}
+            class:light-duty={row._lightDuty}
+            class:active={row._statusActive}
           >
-        </tr>
-      {/each}
-    </table>
+            <td>{row.name}</td>
+            <td>{row.reason}</td>
+            <td>{row.status}</td>
+            <td>{row.start}</td>
+            <td>{row.end}</td>
+            <td>{row.recordID}</td>
+            <td>{row.recordLocation}</td>
+            <td>{row.dateSubmit}</td>
+            <td
+              ><select
+                value={row.approved}
+                on:blur={(e) => handleUpdateStatus(row.id, e)}
+              >
+                <option value="0">Pending</option>
+                <option value="1">Approved</option>
+                <option value="2">Rejected</option>
+              </select></td
+            >
+          </tr>
+        {/each}
+      </table>
+    </div>
   {:catch error}
     <p class="error">{error}</p>
   {/await}
@@ -112,22 +119,31 @@
     background: rgba(255, 106, 106, 0.473);
   }
 
+  .table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    height: 400px;
+  }
+
   table {
     border-collapse: collapse;
-  }
-
-  table,
-  tr {
     width: 100%;
+    height: 100%;
   }
 
-  td {
+  td,
+  th {
     border-bottom: 1px solid gray;
     padding: 10px 5px;
+    font-size: 16px;
   }
 
   th {
+    position: sticky;
+    background: #f5f5f5;
+    top: 0 px;
     text-align: left;
+    font-size: 16px;
   }
   .hidden {
     display: none;
