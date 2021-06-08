@@ -35,6 +35,13 @@
       {/each}
     </select>
     <table>
+      <thead>
+        <th>Name</th>
+        <th>Reason</th>
+        <th>Status</th>
+        <th>Start</th>
+        <th>End</th>
+      </thead>
       {#each rows as row}
         <tr
           class:hidden={(!showAll && !row._statusActive && !row._lightDuty) ||
@@ -44,7 +51,6 @@
               !row.name.toLowerCase().includes(nameFilter.toLowerCase()))}
           class:light-duty={row._lightDuty}
           class:active={row._statusActive}
-          class="record"
         >
           <td>{row.name}</td>
           <td>{row.reason}</td>
@@ -72,14 +78,22 @@
     background: rgba(255, 106, 106, 0.473);
   }
 
-  .record {
-    border-bottom: #f5f5f5 solid 1px;
-    padding: 5px;
+  table {
+    border-collapse: collapse;
   }
 
   table,
   tr {
     width: 100%;
+  }
+
+  td {
+    border-bottom: 1px solid gray;
+    padding: 10px 5px;
+  }
+
+  th {
+    text-align: left;
   }
   .hidden {
     display: none;
