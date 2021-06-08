@@ -20,20 +20,32 @@
   {#await data}
     loading...
   {:then rows}
-    <input type="text" bind:value={nameFilter} />
-    <input type="checkbox" bind:checked={showAll} />
-    <select bind:value={coyFilter}>
-      <option value="all">all</option>
-      {#each coys as coy}
-        <option value={coy}>{coy}</option>
-      {/each}
-    </select>
-    <select bind:value={pltFilter}>
-      <option value="all">all</option>
-      {#each plts as plt}
-        <option value={plt}>{plt}</option>
-      {/each}
-    </select>
+    <input
+      class="name-search"
+      type="text"
+      placeholder="Search name..."
+      bind:value={nameFilter}
+    />
+    <p>
+      <input type="checkbox" bind:checked={showAll} /> Show All
+    </p>
+    <p class:hidden={coys.length < 2}>
+      Company: <select bind:value={coyFilter}>
+        <option value="all">all</option>
+        {#each coys as coy}
+          <option value={coy}>{coy}</option>
+        {/each}
+      </select>
+    </p>
+    <p class:hidden={plts.length < 2}>
+      Platoon:
+      <select bind:value={pltFilter}>
+        <option value="all">all</option>
+        {#each plts as plt}
+          <option value={plt}>{plt}</option>
+        {/each}
+      </select>
+    </p>
     <table>
       <thead>
         <th>Name</th>
@@ -97,5 +109,9 @@
   }
   .hidden {
     display: none;
+  }
+
+  .name-search {
+    width: 100%;
   }
 </style>
