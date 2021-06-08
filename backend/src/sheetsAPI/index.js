@@ -1,9 +1,5 @@
-import flatten from 'lodash/flatten';
-import groupBy from 'lodash/groupBy';
 import moment from 'moment-timezone';
 import { google } from 'googleapis';
-import sortBy from 'lodash/sortBy';
-import isNil from 'lodash/isNil';
 
 export async function createGoogleSheetsClient() {
   const jwtClient = new google.auth.JWT(
@@ -43,9 +39,19 @@ function parseRow(row, currentDate) {
     recordID: row[8],
     recordLocation: row[9],
     dateSubmit: row[10],
-    approved: row[11],
     // Computed Fields
-    _statusActive: row[6] === 'PERM' || currentDate < endDate,
+    _approved: ApprovedMap[row[11]],
+    _statusActive:
+      row[6] === 'PERM' ||
+      currentDate < endDate ||
+      currentDate.diff(endDate, 'days') < 1,
+    _lightDuty: endDate && currentDate.diff(endDate, 'days') < 2,
     _perm: row[6] === 'PERM',
   };
 }
+
+const ApprovedMap = {
+  0: 'PENDING',
+  1: 'APPROVED',
+  2: 'REJECTED',
+};

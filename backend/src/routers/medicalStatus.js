@@ -15,7 +15,7 @@ medicalStatus.get(
   async (ctx, next) => {
     const { sheets, user } = ctx;
     let medicalStatuses = await getMedicalStatuses(sheets);
-    if (user.role !== ROLE.ADMIN) {
+    if (user.role !== ROLES.ADMIN) {
       medicalStatuses = medicalStatuses.filter((s) => s.coy === user.role);
     }
     ctx.type = 'application/json';
