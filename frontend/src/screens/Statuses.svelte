@@ -56,6 +56,12 @@
         {/each}
       </select>
     </p>
+    <div class="legend">
+      <div class="square light-duty" />
+      : Light Duty
+      <div class="square active" />
+      : On Status
+    </div>
     <div class="table-wrapper">
       <table>
         <thead>
@@ -112,11 +118,24 @@
     padding: 0 10px;
   }
 
+  .legend {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+  }
+  .legend > * {
+    margin: 5px;
+  }
+
   .light-duty {
     background: rgba(233, 255, 106, 0.473);
   }
   .active {
     background: rgba(255, 106, 106, 0.473);
+  }
+  .square {
+    height: 15px;
+    width: 15px;
   }
 
   .table-wrapper {

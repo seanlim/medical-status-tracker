@@ -4,7 +4,7 @@
   "main": "lib/server.js",
   "license": "MIT",
   "scripts": {
-    "migrate": "prisma migrate deploy ",
+    "migrate": "prisma migrate deploy",
     "build": "babel src -d lib",
     "start": "yarn migrate && node .",
     "dev": "rm -rfv lib && yarn build && node ."
